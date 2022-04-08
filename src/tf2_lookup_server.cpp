@@ -22,14 +22,10 @@ class TF2LookupServer : public rclcpp::Node
         TF2LookupServer(const rclcpp::NodeOptions & options = rclcpp::NodeOptions()) :
             Node("tf2_lookup_server", options)
         {
-            double buffer_duration_s;
-            this->declare_parameter<double>("buffer_duration", 10.0);
-            this->get_parameter<double>("buffer_duration", buffer_duration_s);
+            double buffer_duration_s = this->declare_parameter<double>("buffer_duration", 10.0);
             tf2::Duration buffer_duration(uint64_t(buffer_duration_s * 1e9));
 
-            int hz;
-            this->declare_parameter<int>("hz", 50);
-            this->get_parameter<int>("hz", hz);
+            int hz = this->declare_parameter<int>("hz", 50);
             loop_sleep_duration_ = new tf2::Duration(uint64_t(1e9 / hz));
 
             tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock(), buffer_duration);
